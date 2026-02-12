@@ -80,8 +80,9 @@ void					take_and_eat(t_philo *guest, int left, int right);
 void					philo_sleep(t_philo *guest);
 void					update_stop(t_data *data);
 void					initial_case(t_philo *guest);
-int						checkCaseOne(t_data *data);
+int						check_case_one(t_data *data);
 void					calc_think(t_philo *guest, long *think_time);
 int						check_all(t_data *data);
+void					initial_data(t_data *data);
 
 #endif

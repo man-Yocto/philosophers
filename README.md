@@ -11,13 +11,10 @@ Each philosopher is represented by a thread. Forks are protected with mutexes, a
 ### Compilation
 
 Move to the mandatory part directory and compile:
-
-cd philo
-
-make
-
 ```
-
+cd philo
+make
+```
 This generates the executable:
 
 ```
@@ -36,6 +33,7 @@ Examples:
 
 ```
 ./philo 5 800 200 200
+
 ./philo 5 800 200 200 7
 ```
 

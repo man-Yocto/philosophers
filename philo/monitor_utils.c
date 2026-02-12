@@ -24,9 +24,11 @@ int	check_death(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->meal_mtx);
 	return (ans);
 }
+
 int	check_meals(t_philo *philo)
 {
-	int ans;
+	int	ans;
+
 	pthread_mutex_lock(&philo->data->meal_mtx);
 	if (philo->data->must_eat == -1)
 		ans = 0;

@@ -18,12 +18,14 @@ int	get_min(int a, int b)
 		return (a);
 	return (b);
 }
+
 int	get_max(int a, int b)
 {
 	if (a > b)
 		return (a);
 	return (b);
 }
+
 int	check_stop(t_data *data)
 {
 	int	stop;
@@ -32,4 +34,12 @@ int	check_stop(t_data *data)
 	stop = data->stop;
 	pthread_mutex_unlock(&data->stop_mtx);
 	return (stop);
+}
+
+void	initial_data(t_data *data)
+{
+	data->forks_initialized = 0;
+	data->print_mtx_initialized = 0;
+	data->stop_mtx_initialized = 0;
+	data->meal_mtx_initialized = 0;
 }

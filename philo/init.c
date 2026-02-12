@@ -27,16 +27,15 @@ int	values_check(t_data *data, int argc, char **argv)
 		return (1);
 	return (0);
 }
+
 int	init_mutexes(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	data->forks_initialized = 0;
-	data->print_mtx_initialized = 0;
-	data->stop_mtx_initialized = 0;
-	data->meal_mtx_initialized = 0;
-	if (!(data->forks = malloc(sizeof(pthread_mutex_t) * data->n)))
+	initial_data(data);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->n);
+	if (!(data->forks))
 		return (1);
 	while (i < data->n)
 	{
@@ -56,12 +55,14 @@ int	init_mutexes(t_data *data)
 	data->meal_mtx_initialized = 1;
 	return (0);
 }
+
 int	init_philos(t_data *data)
 {
 	int	i;
 
 	i = 1;
-	if (!(data->philos = malloc(sizeof(t_philo) * data->n)))
+	data->philos = malloc(sizeof(t_philo) * data->n);
+	if (!(data->philos))
 		return (1);
 	while (i < data->n + 1)
 	{
@@ -75,6 +76,7 @@ int	init_philos(t_data *data)
 	}
 	return (0);
 }
+
 int	init_all(t_data *data, int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)

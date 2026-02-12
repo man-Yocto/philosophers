@@ -61,7 +61,7 @@ void	inc_meal(t_philo *philo)
 
 void	cleanup(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (data->forks)
 	{

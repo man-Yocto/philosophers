@@ -100,7 +100,7 @@ void	*hotel(void *arg)
 	initial_case(guest);
 	while (!check_stop(data))
 	{
-		if (checkCaseOne(data))
+		if (check_case_one(data))
 			return (NULL);
 		print_stat(data, guest->id + 1, "is thinking");
 		calc_think(guest, &think_time);
@@ -116,7 +116,7 @@ void	*hotel(void *arg)
 
 void	*room_service(void *arg)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)arg;
 	while (!check_stop(data))

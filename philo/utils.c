@@ -36,6 +36,7 @@ int	ft_posatoi(const char *nptr)
 		return (0);
 	return (result);
 }
+
 long	ft_posatol(const char *nptr)
 {
 	size_t	i;
@@ -60,6 +61,7 @@ long	ft_posatol(const char *nptr)
 		return (0);
 	return (result);
 }
+
 void	print_stat(t_data *data, int id, char *msg)
 {
 	long	t;

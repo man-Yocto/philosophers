@@ -68,7 +68,7 @@ void	initial_case(t_philo *guest)
 	}
 }
 
-int	checkCaseOne(t_data *data)
+int	check_case_one(t_data *data)
 {
 	if (data->n == 1)
 	{
