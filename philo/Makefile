@@ -2,7 +2,7 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 TARGET = $(NAME)
-SRC = init.c main.c simu.c monitor_utils.c utils.c
+SRC = init.c main.c simu.c monitor_utils.c utils.c utils1.c utils2.c simu1.c
 OBJ = $(SRC:.c=.o)
 
 all: $(TARGET)

@@ -6,7 +6,7 @@
 /*   By: aalkhaso <aalkhaso@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 01:00:42 by aalkhaso          #+#    #+#             */
-/*   Updated: 2026/02/10 01:00:54 by aalkhaso         ###   ########.fr       */
+/*   Updated: 2026/02/12 09:27:42 by aalkhaso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ typedef struct s_data
 	pthread_mutex_t		meal_mtx;
 	t_philo				*philos;
 	pthread_t			monitor_thread;
+	int					forks_initialized;
+	int					print_mtx_initialized;
+	int					stop_mtx_initialized;
+	int					meal_mtx_initialized;
 }						t_data;
 
 void					*room_service(void *arg);
@@ -74,5 +78,10 @@ void					print_died(t_data *data, int id, char *msg);
 void					case_one(t_philo *guest, int left);
 void					take_and_eat(t_philo *guest, int left, int right);
 void					philo_sleep(t_philo *guest);
+void					update_stop(t_data *data);
+void					initial_case(t_philo *guest);
+int						checkCaseOne(t_data *data);
+void					calc_think(t_philo *guest, long *think_time);
+int						check_all(t_data *data);
 
 #endif

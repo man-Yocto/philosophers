@@ -6,7 +6,7 @@
 /*   By: aalkhaso <aalkhaso@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 00:42:55 by yocto             #+#    #+#             */
-/*   Updated: 2026/02/10 01:02:08 by aalkhaso         ###   ########.fr       */
+/*   Updated: 2026/02/12 09:26:37 by aalkhaso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,28 @@ int	init_mutexes(t_data *data)
 	int	i;
 
 	i = 0;
+	data->forks_initialized = 0;
+	data->print_mtx_initialized = 0;
+	data->stop_mtx_initialized = 0;
+	data->meal_mtx_initialized = 0;
 	if (!(data->forks = malloc(sizeof(pthread_mutex_t) * data->n)))
 		return (1);
 	while (i < data->n)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL))
 			return (1);
+		data->forks_initialized++;
 		i++;
 	}
 	if (pthread_mutex_init(&data->print_mtx, NULL))
 		return (1);
+	data->print_mtx_initialized = 1;
 	if (pthread_mutex_init(&data->stop_mtx, NULL))
 		return (1);
+	data->stop_mtx_initialized = 1;
 	if (pthread_mutex_init(&data->meal_mtx, NULL))
 		return (1);
+	data->meal_mtx_initialized = 1;
 	return (0);
 }
 int	init_philos(t_data *data)
@@ -74,10 +82,20 @@ int	init_all(t_data *data, int argc, char **argv)
 	data->stop = 0;
 	data->must_eat = -1;
 	data->created = 0;
+	data->forks = NULL;
+	data->philos = NULL;
+	data->monitor_thread = 0;
+	data->forks_initialized = 0;
+	data->print_mtx_initialized = 0;
+	data->stop_mtx_initialized = 0;
+	data->meal_mtx_initialized = 0;
 	if (values_check(data, argc, argv))
 		return (1);
 	if (init_mutexes(data))
+	{
+		cleanup(data);
 		return (1);
+	}
 	if (init_philos(data))
 	{
 		cleanup(data);

@@ -6,32 +6,12 @@
 /*   By: aalkhaso <aalkhaso@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 01:00:07 by aalkhaso          #+#    #+#             */
-/*   Updated: 2026/02/10 01:00:18 by aalkhaso         ###   ########.fr       */
+/*   Updated: 2026/02/12 09:30:31 by aalkhaso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	cleanup(t_data *data)
-{
-	int	i;
-
-	if (data->forks)
-	{
-		i = 0;
-		while (i < data->n)
-		{
-			pthread_mutex_destroy(&data->forks[i]);
-			i++;
-		}
-		free(data->forks);
-	}
-	pthread_mutex_destroy(&data->print_mtx);
-	pthread_mutex_destroy(&data->stop_mtx);
-	pthread_mutex_destroy(&data->meal_mtx);
-	if (data->philos)
-		free(data->philos);
-}
 int	ft_posatoi(const char *nptr)
 {
 	size_t	i;
@@ -111,39 +91,4 @@ long	get_time(void)
 
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-int	get_min(int a, int b)
-{
-	if (a < b)
-		return (a);
-	return (b);
-}
-int	get_max(int a, int b)
-{
-	if (a > b)
-		return (a);
-	return (b);
-}
-int	check_stop(t_data *data)
-{
-	int	stop;
-
-	pthread_mutex_lock(&data->stop_mtx);
-	stop = data->stop;
-	pthread_mutex_unlock(&data->stop_mtx);
-	return (stop);
-}
-void	update_meal_t(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->meal_mtx);
-	philo->last_meal = get_time();
-	pthread_mutex_unlock(&philo->data->meal_mtx);
-}
-
-void	inc_meal(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->meal_mtx);
-	philo->meals_eaten += 1;
-	pthread_mutex_unlock(&philo->data->meal_mtx);
 }
