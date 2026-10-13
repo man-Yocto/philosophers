@@ -1,0 +1,13 @@
+# Build artifacts
+*.o
+*.a
+*.d
+*.dSYM/
+a.out
+philo/philo
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

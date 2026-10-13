@@ -1,3 +1,7 @@
+# philosophers
+
+[![CI](https://github.com/man-Yocto/philosophers/actions/workflows/ci.yml/badge.svg)](https://github.com/man-Yocto/philosophers/actions/workflows/ci.yml)
+
 *This project has been created as part of the 42 curriculum by aalkhaso.*
 
 ## Description
@@ -5,6 +9,50 @@
 The Philosophers project is a training exercise in multithreading and synchronization. It implements the classic Dining Philosophers problem using POSIX threads and mutexes. The objective is to simulate philosophers who must eat, sleep, and think while sharing a limited number of forks, without causing deadlocks or starvation and while respecting strict timing constraints.
 
 Each philosopher is represented by a thread. Forks are protected with mutexes, and a monitoring routine supervises the simulation to detect when a philosopher dies or when all required meals have been eaten.
+
+## The problem
+
+<p align="center">
+  <img src="docs/dining-philosophers.svg" alt="Five philosophers around a table with five forks. P1 and P3 are eating, each holding two forks; P2 and P5 are thinking; P4 is sleeping; fork F5 is free. A philosopher dies if the time since their last meal reaches time_to_die." width="520"/>
+</p>
+
+*N* philosophers sit around a table with *N* forks — one between each pair. To eat, a philosopher
+needs **both** neighbouring forks, so two neighbours can never eat at the same time. Each
+philosopher loops through three states:
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Thinking
+    Thinking --> Eating: lock lower-numbered fork, then the higher one
+    Eating --> Sleeping: after time_to_eat, release both forks
+    Sleeping --> Thinking: after time_to_sleep
+    Eating --> [*]: ate the required number of meals (optional)
+```
+
+A separate **monitor thread** watches everyone: if `now − last_meal ≥ time_to_die` for any
+philosopher, it prints `died` and stops the simulation.
+
+## How this implementation works
+
+- **One thread per philosopher, one mutex per fork**, plus a monitor thread (`room_service`).
+- **Deadlock prevention through resource ordering:** every philosopher locks the lower-numbered
+  fork first, so a circular wait — everyone holding their left fork and waiting for the right —
+  is impossible.
+- **Starvation mitigation:** each philosopher's think time is computed from how much time is left
+  before `time_to_die`, so hungry philosophers get to the forks first.
+- **Precise timing:** eating and sleeping wait in short `usleep` slices while re-checking the stop
+  flag, so the simulation ends promptly once someone dies.
+- **Shared state** (`last_meal`, meal counters, stop flag, output) is protected by mutexes so
+  log lines never interleave and no data race occurs.
+
+## Key technical challenges
+
+- Avoiding **deadlock** without a central waiter.
+- Reporting a death within **10 ms** of it happening, even with many threads.
+- Keeping `usleep` drift small enough that tight timings like `./philo 4 410 200 200` survive.
+- Eliminating **data races** on values read by the monitor and written by philosopher threads.
+- The single-philosopher edge case: one fork, so they can never eat and must die on time.
 
 ## Instructions
 
@@ -52,6 +100,10 @@ Remove compiled files:
 ```
 make fclean
 ```
+
+## What I learned
+
+<!-- TODO: write this section yourself -->
 
 ## Resources
 
